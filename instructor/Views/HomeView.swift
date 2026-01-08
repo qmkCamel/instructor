@@ -67,19 +67,33 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        impactLight.impactOccurred()
                         showingRecords = true
                     } label: {
-                        Image(systemName: "clock")
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: 15, weight: .medium))
                             .foregroundStyle(themeTextSecondary)
+                            .frame(width: 36, height: 36)
+                            .background(
+                                Circle()
+                                    .fill(Color(red: 0.92, green: 0.90, blue: 0.87).opacity(0.6))
+                            )
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        impactLight.impactOccurred()
                         showingQuotePool = true
                     } label: {
-                        Image(systemName: "book")
+                        Image(systemName: "text.book.closed")
+                            .font(.system(size: 15, weight: .medium))
                             .foregroundStyle(themeTextSecondary)
+                            .frame(width: 36, height: 36)
+                            .background(
+                                Circle()
+                                    .fill(Color(red: 0.92, green: 0.90, blue: 0.87).opacity(0.6))
+                            )
                     }
                 }
             }
