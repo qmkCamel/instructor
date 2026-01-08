@@ -10,11 +10,10 @@ import SwiftUI
 struct ActionConfirmationView: View {
     let quote: Quote
     let situation: Situation
+    @Binding var navigationPath: NavigationPath
     
     @State private var selectedAction: ActionChoice?
-    @State private var showCompletion = false
     private let dataManager = QuoteDataManager.shared
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 0) {
@@ -50,7 +49,7 @@ struct ActionConfirmationView: View {
             Button {
                 if let action = selectedAction {
                     saveRecord(action: action)
-                    showCompletion = true
+                    navigationPath.append(NavigationDestination.completion)
                 }
             } label: {
                 Text("记录")
@@ -68,9 +67,6 @@ struct ActionConfirmationView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $showCompletion) {
-            CompletionView()
-        }
     }
     
     private func saveRecord(action: ActionChoice) {
@@ -119,10 +115,12 @@ struct ActionConfirmationView: View {
 }
 
 #Preview {
+    @Previewable @State var path = NavigationPath()
     NavigationStack {
         ActionConfirmationView(
             quote: Quote(content: "没有调查，就没有发言权。", source: "反对本本主义", situation: .hesitating),
-            situation: .hesitating
+            situation: .hesitating,
+            navigationPath: $path
         )
     }
 }

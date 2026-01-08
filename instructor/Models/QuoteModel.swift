@@ -19,6 +19,19 @@ enum Situation: String, CaseIterable, Codable {
         return self.rawValue
     }
     
+    var emoji: String {
+        switch self {
+        case .hesitating: return "🤔"
+        case .retreating: return "😰"
+        case .struggling: return "💪"
+        case .passive: return "😔"
+        }
+    }
+    
+    var displayNameWithEmoji: String {
+        return "\(emoji) \(rawValue)"
+    }
+    
     var categoryName: String {
         switch self {
         case .hesitating: return "犹豫时该看的"
@@ -30,7 +43,7 @@ enum Situation: String, CaseIterable, Codable {
 }
 
 // MARK: - 语录模型
-struct Quote: Identifiable, Codable {
+struct Quote: Identifiable, Codable, Hashable {
     let id: UUID
     let content: String
     let source: String
@@ -53,6 +66,18 @@ enum ActionChoice: String, CaseIterable, Codable {
     var displayName: String {
         return self.rawValue
     }
+    
+    var emoji: String {
+        switch self {
+        case .did: return "✅"
+        case .didNot: return "❌"
+        case .avoided: return "🏃"
+        }
+    }
+    
+    var displayNameWithEmoji: String {
+        return "\(emoji) \(rawValue)"
+    }
 }
 
 // MARK: - 记录模型
@@ -73,7 +98,7 @@ struct QuoteRecord: Identifiable, Codable {
     
     var dateString: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy.MM.dd"
+        formatter.dateFormat = "yyyy.MM.dd HH:mm"
         return formatter.string(from: timestamp)
     }
 }

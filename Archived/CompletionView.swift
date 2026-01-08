@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - 完成页面（立刻退场）
 struct CompletionView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Binding var navigationPath: NavigationPath
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,15 +29,18 @@ struct CompletionView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
+        .navigationBarBackButtonHidden(true)
         .onAppear {
-            // 2秒后自动关闭
+            // 2秒后返回首页
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                dismiss()
+                // 清空导航路径，直接返回首页
+                navigationPath.removeLast(navigationPath.count)
             }
         }
     }
 }
 
 #Preview {
-    CompletionView()
+    @Previewable @State var path = NavigationPath()
+    CompletionView(navigationPath: $path)
 }

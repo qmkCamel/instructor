@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - 选择处境
 struct SituationSelectionView: View {
     @State private var selectedSituation: Situation?
-    @State private var navigateToQuote: Bool = false
+    @Binding var navigationPath: NavigationPath
     
     var body: some View {
         VStack(spacing: 0) {
@@ -49,7 +49,9 @@ struct SituationSelectionView: View {
             // 确认按钮
             if selectedSituation != nil {
                 Button(action: {
-                    navigateToQuote = true
+                    if let situation = selectedSituation {
+                        navigationPath.append(NavigationDestination.quoteDisplay(situation))
+                    }
                 }) {
                     Text("确认")
                         .font(.system(size: 18, weight: .medium))
@@ -66,17 +68,13 @@ struct SituationSelectionView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(isPresented: $navigateToQuote) {
-            if let situation = selectedSituation {
-                QuoteDisplayView(situation: situation)
-            }
-        }
     }
 }
 
 
 #Preview {
+    @Previewable @State var path = NavigationPath()
     NavigationStack {
-        SituationSelectionView()
+        SituationSelectionView(navigationPath: $path)
     }
 }

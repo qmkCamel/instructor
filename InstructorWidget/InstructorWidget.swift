@@ -78,7 +78,7 @@ struct SmallWidgetView: View {
             VStack(alignment: .leading, spacing: 6) {
                 // 行动状态
                 if let action = entry.action {
-                    Text(action.shortName)
+                    Text(action.shortNameWithEmoji)
                         .font(.system(size: 11, weight: .medium))
                         .foregroundStyle(action.color)
                 }
@@ -119,7 +119,7 @@ struct MediumWidgetView: View {
                     // 行动状态 + 日期
                     if let action = entry.action {
                         HStack(spacing: 8) {
-                            Text(action.shortName)
+                            Text(action.shortNameWithEmoji)
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(action.color)
                             
@@ -171,7 +171,7 @@ struct LargeWidgetView: View {
                 // 行动状态 + 日期
                 if let action = entry.action {
                     HStack(spacing: 12) {
-                        Text(action.shortName)
+                        Text(action.shortNameWithEmoji)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(action.color)
                         

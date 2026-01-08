@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyRecordsView: View {
+    @Environment(\.dismiss) private var dismiss
     private let dataManager = QuoteDataManager.shared
     @State private var records: [QuoteRecord] = []
     @State private var selectedRecord: QuoteRecord?
@@ -22,6 +23,13 @@ struct MyRecordsView: View {
         }
         .navigationTitle("我的记录")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("完成") {
+                    dismiss()
+                }
+            }
+        }
         .onAppear {
             loadRecords()
         }
@@ -82,7 +90,7 @@ struct RecordRowView: View {
                     .font(.system(size: 14, weight: .regular))
                     .foregroundStyle(.secondary)
                 
-                Text(record.situation.displayName)
+                Text(record.situation.displayNameWithEmoji)
                     .font(.system(size: 14, weight: .regular))
                     .foregroundStyle(.secondary)
             }
@@ -94,11 +102,7 @@ struct RecordRowView: View {
                 .multilineTextAlignment(.leading)
             
             HStack(spacing: 8) {
-                Image(systemName: "arrow.right")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-                
-                Text(record.action.displayName)
+                Text(record.action.displayNameWithEmoji)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(actionColor(for: record.action))
             }
@@ -129,7 +133,7 @@ struct RecordDetailView: View {
                         Text("状态：")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundStyle(.secondary)
-                        Text(record.situation.displayName)
+                        Text(record.situation.displayNameWithEmoji)
                             .font(.system(size: 16, weight: .regular))
                             .foregroundStyle(.primary)
                     }
@@ -170,7 +174,7 @@ struct RecordDetailView: View {
                     Text("我的选择：")
                         .font(.system(size: 16, weight: .regular))
                         .foregroundStyle(.secondary)
-                    Text(record.action.displayName)
+                    Text(record.action.displayNameWithEmoji)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(.primary)
                 }

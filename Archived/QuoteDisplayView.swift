@@ -10,8 +10,8 @@ import SwiftUI
 // MARK: - 语录展示（冷处理）
 struct QuoteDisplayView: View {
     let situation: Situation
+    @Binding var navigationPath: NavigationPath
     @State private var quote: Quote?
-    @State private var navigateToActionConfirm: Bool = false
     
     private let dataManager = QuoteDataManager.shared
     
@@ -59,7 +59,8 @@ struct QuoteDisplayView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
-                    // 返回首页
+                    // 返回首页：清空导航路径
+                    navigationPath.removeLast(navigationPath.count)
                 }) {
                     Image(systemName: "xmark")
                         .foregroundStyle(.primary)
@@ -72,16 +73,11 @@ struct QuoteDisplayView: View {
         .gesture(
             DragGesture(minimumDistance: 50)
                 .onEnded { value in
-                    if value.translation.height > 0 {
-                        navigateToActionConfirm = true
+                    if value.translation.height > 0, let quote = quote {
+                        navigationPath.append(NavigationDestination.actionConfirmation(quote, situation))
                     }
                 }
         )
-        .navigationDestination(isPresented: $navigateToActionConfirm) {
-            if let quote = quote {
-                ActionConfirmationView(quote: quote, situation: situation)
-            }
-        }
     }
     
     private func loadQuote() {
@@ -90,7 +86,8 @@ struct QuoteDisplayView: View {
 }
 
 #Preview {
+    @Previewable @State var path = NavigationPath()
     NavigationStack {
-        QuoteDisplayView(situation: .hesitating)
+        QuoteDisplayView(situation: .hesitating, navigationPath: $path)
     }
 }

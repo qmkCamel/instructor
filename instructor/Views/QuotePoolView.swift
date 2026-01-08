@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - 语录池（只读）
 struct QuotePoolView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var selectedSituation: Situation = .hesitating
     
     private let dataManager = QuoteDataManager.shared
@@ -39,6 +40,13 @@ struct QuotePoolView: View {
         }
         .navigationTitle("语录池")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("完成") {
+                    dismiss()
+                }
+            }
+        }
     }
 }
 

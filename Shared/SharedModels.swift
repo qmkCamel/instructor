@@ -25,6 +25,19 @@ enum SharedSituation: String, CaseIterable, Codable {
         case .passive: return "被动"
         }
     }
+    
+    var emoji: String {
+        switch self {
+        case .hesitating: return "🤔"
+        case .retreating: return "😰"
+        case .struggling: return "💪"
+        case .passive: return "😔"
+        }
+    }
+    
+    var shortNameWithEmoji: String {
+        return "\(emoji) \(shortName)"
+    }
 }
 
 // MARK: - 行动选择（共享）
@@ -39,6 +52,18 @@ enum SharedActionChoice: String, CaseIterable, Codable {
         case .didNot: return "没照做"
         case .avoided: return "逃避了"
         }
+    }
+    
+    var emoji: String {
+        switch self {
+        case .did: return "✅"
+        case .didNot: return "❌"
+        case .avoided: return "🏃"
+        }
+    }
+    
+    var shortNameWithEmoji: String {
+        return "\(emoji) \(shortName)"
     }
     
     var color: Color {
@@ -65,7 +90,7 @@ struct SharedLastRecord: Codable {
     
     var dateString: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM.dd"
+        formatter.dateFormat = "MM.dd HH:mm"
         return formatter.string(from: timestamp)
     }
 }
